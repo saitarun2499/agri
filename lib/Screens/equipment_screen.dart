@@ -1,6 +1,7 @@
 import 'package:agri/Components/audio_preview.dart';
 import 'package:agri/Models/file_model.dart';
 import 'package:agri/Screens/audio_screen.dart';
+import 'package:agri/Screens/reply_screen.dart';
 import 'package:agri/Screens/upload_images_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,18 @@ class _EquipmentScreenState extends State<EquipmentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Agri Equipment'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.message),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReplyScreen(
+                          userId: userId, type: "EquipmentMessages")));
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [
