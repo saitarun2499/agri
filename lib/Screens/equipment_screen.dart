@@ -22,7 +22,7 @@ class _EquipmentScreenState extends State<EquipmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agri Equipment'),
+        title: const Center(child: Text('పంట సంసిద్ధత')),
         actions: [
           IconButton(
             icon: const Icon(Icons.message),

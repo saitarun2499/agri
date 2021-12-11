@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // print(userId + "Printing User ID");
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agri Crops'),
+        title:  const Center(child: Text('వ్యాధి నిర్వహణ')),
         actions: [
           IconButton(
             icon: const Icon(Icons.message),
