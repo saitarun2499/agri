@@ -51,7 +51,16 @@ class _AudioScreenState extends State<AudioScreen> {
             .collection("users")
             .doc(id)
             .collection(screenType.toString())
-            .add({"url": url, "type": "audio", "dateTime": DateTime.now()});
+            .add({
+          "url": url,
+          "type": "audio",
+          "dateTime": DateTime.now()
+        }).then((value) async => {
+                  FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(id)
+                      .update({"dateTime": DateTime.now()})
+                });
       }
       uploading = false;
       setState(() {});

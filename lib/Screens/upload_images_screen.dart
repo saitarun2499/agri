@@ -81,7 +81,12 @@ class _UploadImagesScreenState extends State<UploadImagesScreen> {
             "type": "image",
             "dateTime": DateTime.now()
           });
-        });
+        }).then((value) async => {
+              FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(id)
+                  .update({"dateTime": DateTime.now()})
+            });
       }
       uploading = false;
       setState(() {});
