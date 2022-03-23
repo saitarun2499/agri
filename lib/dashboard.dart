@@ -1,11 +1,17 @@
 import 'package:agri/Screens/equipment_screen.dart';
 import 'package:agri/Screens/home_screen.dart';
+import 'package:agri/Utils/Utils.dart';
 import 'package:agri/diseases.dart';
 import 'package:agri/fert.dart';
 import 'package:agri/irri.dart';
 import 'package:agri/mark.dart';
 import 'package:agri/types.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
+
+String userId = "";
 
 class Dash extends StatefulWidget {
   const Dash({Key? key}) : super(key: key);
@@ -15,6 +21,54 @@ class Dash extends StatefulWidget {
 }
 
 class _DashState extends State<Dash> {
+  bool isFirstLoad = true;
+
+  getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String id = prefs.getString('userId').toString();
+    // print(id);
+    if (id == "null") {
+      // print("Empty Id");
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await FirebaseFirestore.instance
+              .collection('UserIndex')
+              .doc("UserIndexDoc")
+              .get();
+
+      int userIndex = documentSnapshot.get("userIndex") as int;
+      id = const Uuid().v4();
+      prefs.setString('userId', id);
+      userId = id;
+      // print(userId);
+      await FirebaseFirestore.instance.collection('users').doc(id).set({
+        "userId": id,
+        "dateTime": DateTime.now(),
+        "userIndex": userIndex + 1
+      }).then((value) async => {
+            await FirebaseFirestore.instance
+                .collection('UserIndex')
+                .doc("UserIndexDoc")
+                .update({"userIndex": userIndex + 1})
+          });
+    } else {
+      // print(id);
+      userId = id;
+      // print(userId);
+    }
+    // await prefs.setInt('counter', counter);
+    setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (isFirstLoad) {
+      getUserId();
+    }
+    isFirstLoad = false;
+
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +128,7 @@ class _DashState extends State<Dash> {
                     color: Color.fromRGBO(220, 220, 220, 50.0)),
                 child: InkWell(
                   onTap: () {
-                     Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const Diseases()),
                     );
@@ -109,9 +163,10 @@ class _DashState extends State<Dash> {
                     color: Color.fromRGBO(220, 220, 220, 50.0)),
                 child: InkWell(
                   onTap: () {
-                     Navigator.push(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()),
                     );
                   },
                   child: Column(
@@ -144,9 +199,10 @@ class _DashState extends State<Dash> {
                     color: Color.fromRGBO(220, 220, 220, 50.0)),
                 child: InkWell(
                   onTap: () {
-                     Navigator.push(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const EquipmentScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const EquipmentScreen()),
                     );
                   },
                   child: Column(
@@ -179,7 +235,7 @@ class _DashState extends State<Dash> {
                     color: Color.fromRGBO(220, 220, 220, 50.0)),
                 child: InkWell(
                   onTap: () {
-                     Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const Fert()),
                     );
@@ -214,7 +270,7 @@ class _DashState extends State<Dash> {
                     color: Color.fromRGBO(220, 220, 220, 50.0)),
                 child: InkWell(
                   onTap: () {
-                     Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const Irr()),
                     );
@@ -249,9 +305,9 @@ class _DashState extends State<Dash> {
                     color: Color.fromRGBO(220, 220, 220, 50.0)),
                 child: InkWell(
                   onTap: () {
-                     Navigator.push(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const  Mark()),
+                      MaterialPageRoute(builder: (context) => const Mark()),
                     );
                   },
                   child: Column(
