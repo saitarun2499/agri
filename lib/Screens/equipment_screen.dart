@@ -6,7 +6,7 @@ import 'package:agri/Screens/upload_images_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'home_screen.dart' as home;
+import 'package:agri/dashboard.dart' as dash;
 
 class EquipmentScreen extends StatefulWidget {
   const EquipmentScreen({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class EquipmentScreen extends StatefulWidget {
 }
 
 class _EquipmentScreenState extends State<EquipmentScreen> {
-  final userId = home.userId;
+  final userId = dash.userId;
 
   @override
   Widget build(BuildContext context) {

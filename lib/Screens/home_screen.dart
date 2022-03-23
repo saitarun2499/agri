@@ -3,13 +3,10 @@ import 'package:agri/Models/file_model.dart';
 import 'package:agri/Screens/audio_screen.dart';
 import 'package:agri/Screens/reply_screen.dart';
 import 'package:agri/Screens/upload_images_screen.dart';
+import 'package:agri/dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
-String userId = "";
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/HomeScreen';
@@ -20,47 +17,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool isFirstLoad = true;
-
-  getUserId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String id = prefs.getString('userId').toString();
-    // print(id);
-    if (id == "null") {
-      // print("Empty Id");
-      id = const Uuid().v4();
-      prefs.setString('userId', id);
-      userId = id;
-      // print(userId);
-      await FirebaseFirestore.instance.collection('users').doc(id).set({
-        "userId": id,
-        "dateTime": DateTime.now(),
-      });
-    } else {
-      // print(id);
-      userId = id;
-      // print(userId);
-    }
-    // await prefs.setInt('counter', counter);
-    setState(() {});
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (isFirstLoad) {
-      getUserId();
-    }
-    isFirstLoad = false;
-
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
     // print(userId + "Printing User ID");
     return Scaffold(
       appBar: AppBar(
-        title:  const Center(child: Text('వ్యాధి నిర్వహణ')),
+        title: const Center(child: Text('వ్యాధి నిర్వహణ')),
         actions: [
           IconButton(
             icon: const Icon(Icons.message),
